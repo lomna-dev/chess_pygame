@@ -62,9 +62,7 @@ def movePawnWhite(posa,posb,img):
         if posa[0] > 0 and posa[0] < 7:
             if a[posb[0]+1][posb[1]][0] == True and a[posb[0]+1][posb[1]][1] == 'b' and a[posb[0]+1][posb[1]][2] == 'p':
                 enpassant = [True,[posb[0],posb[1]+1]]
-            else:
-                enpassant[0] = False
-            if a[posb[0]-1][posb[1]][0] == True and a[posb[0]-1][posb[1]][1] == 'b' and a[posb[0]-1][posb[1]][2] == 'p':
+            elif a[posb[0]-1][posb[1]][0] == True and a[posb[0]-1][posb[1]][1] == 'b' and a[posb[0]-1][posb[1]][2] == 'p':
                 enpassant = [True,[posb[0],posb[1]+1]]
             else:
                 enpassant[0] = False
@@ -100,9 +98,7 @@ def movePawnBlack(posa,posb,img):
         if posa[0] > 0 and posa[0] < 7:
             if a[posb[0]+1][posb[1]][0] == True and a[posb[0]+1][posb[1]][1] == 'w' and a[posb[0]+1][posb[1]][2] == 'p':
                 enpassant = [True,[posb[0],posb[1]-1]]
-            else:
-                enpassant[0] = False
-            if a[posb[0]-1][posb[1]][0] == True and a[posb[0]-1][posb[1]][1] == 'w' and a[posb[0]-1][posb[1]][2] == 'p':
+            elif a[posb[0]-1][posb[1]][0] == True and a[posb[0]-1][posb[1]][1] == 'w' and a[posb[0]-1][posb[1]][2] == 'p':
                 enpassant = [True,[posb[0],posb[1]-1]]
             else:
                 enpassant[0] = False

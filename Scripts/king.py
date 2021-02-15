@@ -68,16 +68,18 @@ def castle(posk,posr):
 #Section to handle movement
 def move(posa,posb):
     z=pickle.load(open("data.bin",'rb'))
-    colour = z[posa[0]][posa[1]][1]
-    piece = z[posa[0]][posa[1]][2]
-    z[posa[0]][posa[1]][0] = False
-    z[posb[0]][posb[1]][1] = colour
-    z[posb[0]][posb[1]][2] = piece
-    z[posb[0]][posb[1]][0] = True
-    pickle.dump(z,open("data.bin",'wb'))
-    changeTurn()
-    import Scripts.pawn as p
-    p.enpassant[0] = False
+    if z[posa[0]][posa[1]][2] == 'r' or z[posa[0]][posa[1]][2] == 'ki':
+        if (z[posa[0]][posa[1]][2] == 'r' and [abs(posb[0] - posa[0]),abs(posb[1] - posa[1])] != [1,1]) or z[posa[0]][posa[1]][2] == 'ki':
+            colour = z[posa[0]][posa[1]][1]
+            piece = z[posa[0]][posa[1]][2]
+            z[posa[0]][posa[1]][0] = False
+            z[posb[0]][posb[1]][1] = colour
+            z[posb[0]][posb[1]][2] = piece
+            z[posb[0]][posb[1]][0] = True
+            pickle.dump(z,open("data.bin",'wb'))
+            changeTurn()
+            import Scripts.pawn as p
+            p.enpassant[0] = False
 
 knightThreats = [[1,-2],[2,-1],[2,1],[1,2],[-1,2],[-2,1],[-2,-1],[-1,-2]]
 

@@ -16,8 +16,8 @@ pygame.init()
 checkBlack = False
 checkWhite = False
 
-widht = 700
-height = 700
+widht = 500
+height = 500
 tob = False #short for turn of black
 kingSurroundings = [[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1],[1,0]]
 win = pygame.display.set_mode((widht,height))
