@@ -16,7 +16,7 @@ def castle(posk,posr):
             if q[x][0][0] == False:
                 k += 1
         for x in range(2,5):
-            if checkThreats(posk,[x,0]) == False:
+            if checkThreats(posk,[x,0])[0] == False:
                 s += 1
         if k == 3 and s == 3:
             move(posk,[2, 0])
@@ -30,7 +30,7 @@ def castle(posk,posr):
             if q[x][0][0] == False:
                 k += 1
         for x in range (4,7):
-            if checkThreats(posk, [x,0]) == False:
+            if checkThreats(posk, [x,0])[0] == False:
                 s += 1
         if k == 2 and s == 3:
             move(posk,[6,0])
@@ -44,7 +44,7 @@ def castle(posk,posr):
             if q[x][7][0] == False:
                 k += 1
         for x in range(2,5):
-            if checkThreats(posk,[x,7]) == False:
+            if checkThreats(posk,[x,7])[0] == False:
                 s += 1
         if k == 3 and s == 3:
             move(posk,[2, 7])
@@ -58,7 +58,7 @@ def castle(posk,posr):
             if q[x][7][0] == False:
                 k += 1
         for x in range (4,7):
-            if checkThreats(posk, [x,7]) == False:
+            if checkThreats(posk, [x,7])[0] == False:
                 s += 1
         if k == 2 and s == 3:
             move(posk,[6,7])
@@ -91,7 +91,7 @@ def changeTurn():
         pickle.dump(True,open("turn.bin",'wb'))
 
 def moveBlackKing(posa,posb):
-    if checkThreats(posa,posb):
+    if checkThreats(posa,posb)[0]:
         pass
     else:
         z = pickle.load(open("data.bin",'rb'))
@@ -106,11 +106,11 @@ def moveBlackKing(posa,posb):
                 if posb != [0,0] or posb != [7,0]:
                     canCastle[0] = False
                     canCastle[1] = False
-        elif posa == [4,0] and (posb == [0,0] or posb == [7,0]):
+        elif posa == [4,0] and (posb == [0,0] or posb == [7,0]) and z[posb[0]][posb[1]][0] == True and z[posb[0]][posb[1]][2] == 'r':
             castle(posa,posb)
 
 def moveWhiteKing(posa,posb):
-    if checkThreats(posa,posb):
+    if checkThreats(posa,posb)[0]:
         pass
     else:
         z = pickle.load(open("data.bin",'rb'))
@@ -125,7 +125,7 @@ def moveWhiteKing(posa,posb):
                 if posb != [0,7] or posb != [7,7]:
                     canCastle[2] = False
                     canCastle[3] = False
-        elif posa == [4,7] and (posb == [0,7] or posb == [7,7]):
+        elif posa == [4,7] and (posb == [0,7] or posb == [7,7]) and z[posb[0]][posb[1]][0] == True and z[posb[0]][posb[1]][2] == 'r':
             castle(posa,posb)
 
 def checkThreats(posa,posb):
@@ -144,15 +144,15 @@ def checkThreats(posa,posb):
             break
         if i == 1 and colourOfKing == 'w' and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == 'b' and z[currentBlock[0]][currentBlock[1]][2] == 'p': #pawn threat
             #print("Black Pawn threat")
-            return True
+            return [True,currentBlock]
         if i == 1 and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and z[currentBlock[0]][currentBlock[1]][2] == 'k': #King thrreat
             #print("King threat")
-            return True
+            return [True,currentBlock]
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] != 'b' and z[currentBlock[0]][currentBlock[1]][2] != 'q'):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'b' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #queen of bishop threat
             #print("bishop or queen threat")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in second quadrant
         currentBlock = [posb[0]-i,posb[1]-i]
         if posb[0] - i == -1 or posb[1] - i == -1:
@@ -161,15 +161,15 @@ def checkThreats(posa,posb):
             break
         if i == 1 and colourOfKing == 'w' and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == 'b' and z[currentBlock[0]][currentBlock[1]][2] == 'p': #pawn threat
             #print("Black Pawn threat")
-            return True
+            return [True,currentBlock]
         if i == 1 and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and z[currentBlock[0]][currentBlock[1]][2] == 'k': #King thrreat
             #print("King threat")
-            return True
+            return [True,currentBlock]
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] != 'b' and z[currentBlock[0]][currentBlock[1]][2] != 'q'):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'b' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #queen of bishop threat
             #print("bishop or queen threat")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in third quadrant
         currentBlock = [posb[0]-i,posb[1]+i]
         if posb[0] - i == -1 or posb[1] + i == 8:
@@ -178,15 +178,15 @@ def checkThreats(posa,posb):
             break
         if i == 1 and colourOfKing == 'b' and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == 'w' and z[currentBlock[0]][currentBlock[1]][2] == 'p': #pawn threat
             #print("White Pawn threat")
-            return True
+            return [True,currentBlock]
         if i == 1 and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and z[currentBlock[0]][currentBlock[1]][2] == 'k': #King thrreat
             #print("King threat")
-            return True
+            return [True,currentBlock]
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] != 'b' and z[currentBlock[0]][currentBlock[1]][2] != 'q'):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'b' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #queen of bishop threat
             #print("bishop or queen threat")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in fourth quadrant
         currentBlock = [posb[0]+i,posb[1]+i]
         if posb[0] + i == 8 or posb[1] + i == 8:
@@ -195,15 +195,15 @@ def checkThreats(posa,posb):
             break
         if i == 1 and colourOfKing == 'b' and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == 'w' and z[currentBlock[0]][currentBlock[1]][2] == 'p': #pawn threat
             #print("White Pawn threat")
-            return True
+            return [True,currentBlock]
         if i == 1 and z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and z[currentBlock[0]][currentBlock[1]][2] == 'k': #King thrreat
             #print("King threat")
-            return True
+            return [True,currentBlock]
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] != 'b' and z[currentBlock[0]][currentBlock[1]][2] != 'q'):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'b' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #queen of bishop threat
             #print("bishop or queen threat")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in +ve x axis
         currentBlock = [posb[0]+i,posb[1]]
         if currentBlock[0] == 8:
@@ -214,7 +214,7 @@ def checkThreats(posa,posb):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'r' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #Rook or queen threat
             #print("Rook or queen threat along +ve x")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in -ve x axis
         currentBlock = [posb[0]-i,posb[1]]
         if currentBlock[0] == -1:
@@ -225,7 +225,7 @@ def checkThreats(posa,posb):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'r' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #Rook or queen threat
             #print("Rook or queen threat along -ve x")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in +ve y axis
         currentBlock = [posb[0],posb[1]+i]
         if currentBlock[1] == 8:
@@ -236,7 +236,7 @@ def checkThreats(posa,posb):
             break
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'r' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #Rook or queen threat
             #print("Rook or queen threat along +ve y axis")
-            return True
+            return [True,currentBlock]
     for i in range(1,8):    #Check in -ve y axis
         currentBlock = [posb[0],posb[1]-i]
         if currentBlock[1] == -1:
@@ -247,7 +247,7 @@ def checkThreats(posa,posb):
             break 
         if z[currentBlock[0]][currentBlock[1]][0] == True and z[currentBlock[0]][currentBlock[1]][1] == colourOfOpponent and (z[currentBlock[0]][currentBlock[1]][2] == 'r' or z[currentBlock[0]][currentBlock[1]][2] == 'q'): #Rook or queen threat
             #print("Rook or queen threat along -ve y")
-            return True
+            return [True,currentBlock]
     for t in knightThreats:
         p = [posb[0] + t[0],posb[1] + t[1]]
         if p[0] > 7 or p[0] < 0 or p[1] > 7 or p[1] < 0:
@@ -255,5 +255,5 @@ def checkThreats(posa,posb):
         else:
             if z[p[0]][p[1]][0] == True and z[p[0]][p[1]][1] == colourOfOpponent and z[p[0]][p[1]][2] == 'kn':
                 #print("knight threat")
-                return True
-    return False
+                return [True,p]
+    return [False,[-1,-4]]
